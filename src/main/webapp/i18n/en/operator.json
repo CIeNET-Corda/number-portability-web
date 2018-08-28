@@ -1,6 +1,22 @@
 {
     "operator": {
-        "title": "Number Portability Management",
-        "subtitle": ""
+        "title": "Number Porting System",
+        "subtitle": "",
+        "home": {
+            "title": "Number Porting",
+            "publish": "Publish New Number",
+            "porting": "Porting Number"
+        },
+        "publish": {
+            "number": "Number",
+            "operator": "Operator"
+        },
+        "porting": {
+            "number": "Number",
+            "operator": "Source Operator"
+        },
+        "number": "Number",
+        "operator": "Operator",
+        "status": "Status"
     }
 }

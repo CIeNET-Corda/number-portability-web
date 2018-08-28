@@ -1,5 +1,8 @@
 package com.cienet.np.web.rest
 
+import com.cienet.npdapp.number.NumberAccessFlow
+import com.cienet.npdapp.number.NumberState
+import com.cienet.npdapp.number.NumberTransferToFlow
 import com.cienet.np.corda.NodeRPCConnection
 import com.cienet.np.corda.RpcInfo
 import com.cienet.np.service.dto.NumberDTO
@@ -9,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import io.github.jhipster.web.util.ResponseUtil
 
 @RestController
 @RequestMapping("/api")
@@ -27,21 +31,27 @@ class NumberResource(private val nodeRpcConnection: NodeRPCConnection) {
         rpcInfoMap.get(operator)?.let {
             // val proxy: CordaRPCOps = nodeRpcConnection.getRpcConnection(it).proxy
 
-            return ResponseEntity(listOf(NumberDTO.fromModel("Operator1", "13511112222", 1)), HttpStatus.OK)
+            // proxy.vaultQuery(NumberState::class.java).states.map { NumberDTO.fromModel(operator, it.state.data.number,  1)}
+            return ResponseEntity(listOf(NumberDTO.fromModel(operator, "13511112222", 1)), HttpStatus.OK)
         }
 
-        return ResponseEntity(HttpStatus.OK)
+        // return ResponseUtil.wrapOrNotFound()
+        return ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
     @PostMapping("/number")
     @Timed
-    fun issueNumber() {
+    fun publishNumber(@RequestParam("operator") operator: String, @RequestParam("number") number: String) {
+        log.info("Issue a number: $number to operator: $operator.")
 
     }
 
-    @PostMapping("/number/transfer")
+    @PostMapping("/number/porting")
     @Timed
-    fun transferNumber() {
+    fun portingNumber(@RequestParam("number") number: String,
+                       @RequestParam("operatorFrom") operatorFrom: String,
+                       @RequestParam("operatorTo") operatorTo: String) {
+        log.info("Porting a number: $number from $operatorFrom to $operatorTo.")
 
     }
 }

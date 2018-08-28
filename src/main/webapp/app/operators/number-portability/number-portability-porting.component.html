@@ -1,0 +1,52 @@
+<div class="row justify-content-center np-porting-page">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="myNumberLabel" jhiTranslate="operator.home.porting">
+                Publish a Number
+            </h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="operator.porting.number">Number</label>
+                    <input type="text" class="form-control" name="number" #numberInput="ngModel"
+                        [(ngModel)]="numToPorting.number" required minlength="1" maxlength="20" pattern="^[0-9]*$">
+
+                    <div *ngIf="numberInput.dirty && numberInput.invalid">
+                        <small class="form-text text-danger"
+                        *ngIf="numberInput.errors.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+
+                        <small class="form-text text-danger"
+                        *ngIf="numberInput.errors.maxlength" jhiTranslate="entity.validation.maxlength"
+                        translateValues="{max: 20}">
+                            This field cannot be longer than 20 characters.
+                        </small>
+
+                        <small class="form-text text-danger"
+                        *ngIf="numberInput.errors.pattern" jhiTranslate="entity.validation.patternLogin">
+                            This field can only contain digits.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="operator.porting.operator">Source Operator</label>
+                    <select class="form-control" id="sourceKey" name="source" [(ngModel)]="numToPorting.operator">
+                        <option *ngFor="let op of operatorsList" [value]="op">{{op}}</option>
+                    </select>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span
+                    jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

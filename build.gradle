@@ -147,6 +147,7 @@ repositories {
 dependencies {
     // Use ", version: jhipster_dependencies_version, changing: true" if you want
     // to use a SNAPSHOT release instead of a stable release
+    compile fileTree(dir: 'libs', include: '*.jar')
     compile group: "io.github.jhipster", name: "jhipster-framework"
     compile "org.springframework.boot:spring-boot-starter-cache"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

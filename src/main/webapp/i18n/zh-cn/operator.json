@@ -1,6 +1,22 @@
 {
     "operator": {
         "title": "号码携带管理",
-        "subtitle": ""
+        "subtitle": "",
+        "home": {
+            "title": "号码携带管理",
+            "publish": "发布新号码",
+            "porting": "转移号码"
+        },
+        "publish": {
+            "number": "号码",
+            "operator": "运营商"
+        },
+        "porting": {
+            "number": "号码",
+            "operator": "源运营商"
+        },
+        "number": "号码",
+        "operator": "运营商",
+        "status": "状态"
     }
 }

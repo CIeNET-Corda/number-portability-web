@@ -1,5 +1,45 @@
-<div>
-    Hello Number Portability for Operator {{operatorId}}!
+<div class="operator-page">
+    <h2>
+        <span id="number-portablility-page-heading" jhiTranslate="operator.home.title">Number Management </span><span class="operator-name"> [{{operator}}] </span>
+        <button class="btn btn-primary float-right jh-create-entity" [routerLink]="['/number-portability/porting', operatorId]">
+            <fa-icon [icon]="'pencil-alt'"></fa-icon> <span jhiTranslate="operator.home.porting">Porting Number</span>
+        </button>
+        <button class="btn btn-primary float-right jh-create-entity" [routerLink]="['/number-portability/publish', operatorId]">
+            <fa-icon [icon]="'plus'"></fa-icon> <span jhiTranslate="operator.home.publish">Publish New Number</span>
+        </button>
 
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="table-responsive" *ngIf="numbers">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="global.field.id">ID</span> </th>
+                <th><span jhiTranslate="operator.number">Number</span> </th>
+                <th><span jhiTranslate="operator.operator">Operator</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody *ngIf ="numbers">
+            <tr *ngFor="let number of numbers; trackBy: trackIdentity">
+                <td>{{number.id}}</td>
+                <td>{{number.number}}</td>
+                <td>{{number.operator}}</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--
+    <div *ngIf="numbers">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+    -->
 </div>
+
 

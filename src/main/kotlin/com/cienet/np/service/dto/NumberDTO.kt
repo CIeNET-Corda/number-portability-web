@@ -1,11 +1,11 @@
 package com.cienet.np.service.dto
 
-data class NumberDTO(var operator: String, var id: String, var state: Int) {
+data class NumberDTO(var operator: String, var number: String, var state: Int) {
     companion object {
-        fun fromModel(operator: String, id: String, state: Int): NumberDTO {
+        fun fromModel(operator: String, number: String, state: Int): NumberDTO {
             return NumberDTO(
                 operator = operator,
-                id = id,
+                number = number,
                 state = state
             )
         }
