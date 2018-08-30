@@ -37,7 +37,7 @@ export class NpPublishNumberComponent implements OnInit {
     save() {
         this.numberService.publish(this.numToPublish).subscribe(response => {
             console.log(`Publish the number: ${this.numToPublish.number} to operator: ${this.numToPublish.operator}`);
+            this.previousState();
         });
-        this.previousState();
     }
 }

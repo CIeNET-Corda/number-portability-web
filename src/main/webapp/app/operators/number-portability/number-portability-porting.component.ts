@@ -40,7 +40,7 @@ export class NpPortingNumberComponent implements OnInit {
     save() {
         this.numberService.porting(this.numToPorting, this.operator).subscribe(response => {
             console.log(`Porting the number: ${this.numToPorting.number} from operator: ${this.numToPorting.operator}`);
+            this.previousState();
         });
-        this.previousState();
     }
 }

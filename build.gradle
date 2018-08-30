@@ -5,6 +5,9 @@ buildscript {
     ext.corda_release_version = '3.2-corda'
     ext.corda_gradle_plugins_version = '3.1.0'
 
+    ext.kotlin_version = '1.1.60'
+    ext.dokka_version = '0.9.17'
+
     repositories {
         mavenLocal()
         jcenter()
@@ -148,9 +151,10 @@ dependencies {
     // Use ", version: jhipster_dependencies_version, changing: true" if you want
     // to use a SNAPSHOT release instead of a stable release
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile "com.google.guava:guava:21.0"
     compile group: "io.github.jhipster", name: "jhipster-framework"
     compile "org.springframework.boot:spring-boot-starter-cache"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
     compile "org.jetbrains.kotlin:kotlin-reflect"
     compile "io.dropwizard.metrics:metrics-core"
     compile "io.dropwizard.metrics:metrics-jcache"
@@ -242,6 +246,15 @@ if (project.hasProperty('nodeInstall')) {
         npmVersion = "${npm_version}"
         yarnVersion = "${yarn_version}"
         download = true
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        languageVersion = "1.1"
+        apiVersion = "1.1"
+        jvmTarget = "1.8"
+        javaParameters = true // Useful for reflection.
     }
 }
 
