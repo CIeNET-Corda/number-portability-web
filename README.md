@@ -1,5 +1,7 @@
 # Number Portablility Web App
 
+NOTE: Please build the project [number-portability-cordapp] firstly. Copy the build/libs/number-portability-cordapp.jar to the libs directory of this project. 
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -148,3 +150,4 @@ Then run:
 [Protractor]: https://angular.github.io/protractor/
 [Leaflet]: http://leafletjs.com/
 [DefinitelyTyped]: http://definitelytyped.org/
+[number-portability-cordapp]: https://github.com/CIeNET-Corda/number-portability-cordapp.
