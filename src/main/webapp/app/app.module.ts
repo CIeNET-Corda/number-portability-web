@@ -3,6 +3,8 @@ import './vendor.ts';
 import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -24,6 +26,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
     imports: [
         BrowserModule,
         NpwebappAppRoutingModule,
+        HttpClientModule,
+        NgHttpLoaderModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),
         NpwebappSharedModule,
         NpwebappCoreModule,

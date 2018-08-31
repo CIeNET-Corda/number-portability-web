@@ -20,7 +20,6 @@ import net.corda.core.node.services.Vault
 import net.corda.core.node.services.vault.QueryCriteria
 import net.corda.core.utilities.getOrThrow
 import org.springframework.beans.factory.annotation.Value
-import kotlin.streams.toList
 
 @RestController
 @RequestMapping("/api")
@@ -40,7 +39,7 @@ class NumberResource(private val nodeRpcConnection: NodeRPCConnection,
         var numberList = listOf<NumberDTO>()
         rpcInfoMap[operator]?.let {
             val proxy: CordaRPCOps = nodeRpcConnection.getRpcConnection(it).proxy
-            numberList = queryAllState(proxy).map { NumberDTO.fromModel(operator, it.state.data.number, 1)}.toList()
+            numberList = queryAllState(proxy).map { stateRef -> NumberDTO.fromModel(operator, stateRef.state.data.number, 1)}.toList()
         }
 
         return ResponseEntity(numberList, HttpStatus.OK)
@@ -50,13 +49,12 @@ class NumberResource(private val nodeRpcConnection: NodeRPCConnection,
     @Timed
     fun publishNumber(@RequestParam("operator") operator: String, @RequestParam("number") number: String) : NumberDTO {
         log.info("Issue a number: $number to operator: $operator.")
-        rpcInfoMap.get(operator)?.let {
+        rpcInfoMap[operator]?.let {
             val proxy: CordaRPCOps = nodeRpcConnection.getRpcConnection(it).proxy
             val ret = performAccessFlow(number, proxy)
             return NumberDTO.fromModel(operator, ret.state.data.number,  1)
         }
 
-        // return ResponseEntity(HttpStatus.NOT_FOUND)
         return NumberDTO.fromModel(operator, "", 1)
     }
 
@@ -83,20 +81,18 @@ class NumberResource(private val nodeRpcConnection: NodeRPCConnection,
     fun queryAllState(cordaRPCOps: CordaRPCOps): List<StateAndRef<NumberState>> {
         val criteria = QueryCriteria.VaultQueryCriteria(Vault.StateStatus.UNCONSUMED)
         val results = cordaRPCOps.vaultQueryByCriteria(criteria, NumberState::class.java)
-        val orderStateRef = results.states.filter{
+        return results.states.filter{
                 it.state.data.currOperator == cordaRPCOps.nodeInfo().legalIdentities.first()
             }.toList()
-        return orderStateRef
     }
 
     fun queryStateBy(number: String, cordaRPCOps: CordaRPCOps): StateAndRef<NumberState> {
         val criteria = QueryCriteria.VaultQueryCriteria(Vault.StateStatus.UNCONSUMED)
         val results = cordaRPCOps.vaultQueryByCriteria(criteria, NumberState::class.java)
-        val orderStateRef = results.states.stream()
+        return results.states.stream()
             .filter{it.state.data.number == number && it.state.data.currOperator == cordaRPCOps.nodeInfo().legalIdentities.first()}
             .findAny()
             .orElse(null) ?: throw FlowException("Can not find this number belongs to the this party.")
-        return orderStateRef
     }
 
     fun performAccessFlow(number: String, cordaRPCOps: CordaRPCOps): StateAndRef<NumberState> {
@@ -105,8 +101,8 @@ class NumberResource(private val nodeRpcConnection: NodeRPCConnection,
     }
 
     fun performTransferFromFlow(number: String, partyName: CordaX500Name, cordaRPCOps: CordaRPCOps): StateAndRef<NumberState> {
-        val otherParty = cordaRPCOps?.wellKnownPartyFromX500Name(partyName) ?: throw FlowException("Can not find this party.")
-        cordaRPCOps.startTrackedFlow(NumberTransferFromFlow::Initiator, number, otherParty)?.returnValue?.getOrThrow()
+        val otherParty = cordaRPCOps.wellKnownPartyFromX500Name(partyName) ?: throw FlowException("Can not find this party.")
+        cordaRPCOps.startTrackedFlow(NumberTransferFromFlow::Initiator, number, otherParty).returnValue.getOrThrow()
         return queryStateBy(number, cordaRPCOps)
     }
 }
